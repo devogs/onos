@@ -1,33 +1,33 @@
 # ONOS Application Activation Script
 
-Ce script Python permet d'activer des applications ONOS en utilisant l'API REST northbound. Il lit les informations des applications à partir d'un fichier JSON et active celles dont l'état est "ACTIVE". La configuration (adresse IP, port, etc.) est chargée depuis un fichier `.env` pour une meilleure gestion et sécurité.
+This Python script facilitates the activation of ONOS applications using the northbound REST API.  It reads application information from a JSON file and activates those with the state "ACTIVE". Configuration parameters (IP address, port, etc.) are loaded from a `.env` file for improved management and security.
 
-## Prérequis
+## Prerequisites
 
-* Python 3.6 ou supérieur
-* Les bibliothèques Python : `requests`, `python-dotenv`
-* Un fichier JSON contenant les informations des applications ONOS (par exemple, `applications.json`)
-* Une instance ONOS en cours d'exécution
+* Python 3.6 or higher
+* Python libraries: `requests`, `python-dotenv`
+* A JSON file containing ONOS application information (e.g., `applications.json`)
+* A running ONOS instance
 
 ## Installation
 
-1.  **Cloner le dépôt (ou télécharger le code)**
+1.  **Clone the repository (or download the code)**
 
-    Si vous avez cloné ce dépôt, passez à l'étape suivante. Si vous avez téléchargé le code, assurez-vous d'avoir tous les fichiers nécessaires ( `app_activation.py`, `applications.json` ).
+    If you've cloned this repository, proceed to the next step. If you've downloaded the code, ensure you have all the necessary files (`app_activation.py`, `applications.json`).
 
-2.  **Créer un environnement virtuel (recommandé)**
+2.  **Create a virtual environment (recommended)**
 
-    Il est fortement recommandé de travailler dans un environnement virtuel pour isoler les dépendances de ce projet.
+    It's highly recommended to work within a virtual environment to isolate project dependencies.
 
     ```bash
-    python3 -m venv venv  # Créer un environnement virtuel nommé "venv"
-    source venv/bin/activate  # Activer l'environnement (Linux/macOS)
-    venv\Scripts\activate  # Activer l'environnement (Windows)
+    python3 -m venv venv      # Create a virtual environment named "venv"
+    source venv/bin/activate  # Activate the environment (Linux/macOS)
+    venv\Scripts\activate      # Activate the environment (Windows)
     ```
 
-3.  **Installer les dépendances**
+3.  **Install dependencies**
 
-    Installez les bibliothèques Python nécessaires à l'aide de `pip` :
+    Install the required Python libraries using `pip`:
 
     ```bash
     pip install requests python-dotenv
@@ -35,54 +35,54 @@ Ce script Python permet d'activer des applications ONOS en utilisant l'API REST 
 
 ## Configuration
 
-1.  **Créer un fichier `.env`**
+1.  **Create a `.env` file**
 
-    Créez un fichier nommé `.env` dans le même répertoire que votre script Python (`app_activation.py`). Ce fichier contiendra les paramètres de configuration de votre instance ONOS.
+    Create a file named `.env` in the same directory as your Python script (`app_activation.py`). This file will hold the configuration settings for your ONOS instance.
 
-2.  **Définir les variables d'environnement**
+2.  **Set environment variables**
 
-    Ajoutez les variables suivantes à votre fichier `.env`, en remplaçant les valeurs d'espace réservé par les informations réelles de votre installation ONOS :
+    Add the following variables to your `.env` file, replacing the placeholder values with the actual information for your ONOS setup:
 
     ```
-    ONOS_IP=your_onos_ip        # Adresse IP de votre instance ONOS (par exemple, 192.168.1.10)
-    ONOS_PORT=8181               # Port de l'API REST ONOS (la valeur par défaut est 8181)
-    ONOS_USER=your_onos_user     # Nom d'utilisateur pour l'authentification ONOS (par exemple, onos)
-    ONOS_PASSWORD=your_onos_password   # Mot de passe pour l'authentification ONOS (par exemple, rocks)
-    JSON_FILE_PATH=applications.json  # Chemin vers votre fichier JSON (laissez "applications.json" si c'est dans le même répertoire)
+    ONOS_IP=your_onos_ip        # IP address of your ONOS instance (e.g., 192.168.1.10)
+    ONOS_PORT=8181               # ONOS REST API port (default is 8181)
+    ONOS_USER=your_onos_user     # Username for ONOS authentication (e.g., onos)
+    ONOS_PASSWORD=your_onos_password   # Password for ONOS authentication (e.g., rocks)
+    JSON_FILE_PATH=applications.json  # Path to your JSON file (leave "applications.json" if it's in the same directory)
     ```
 
-    **⚠️  Important (Sécurité) :**
+    **⚠️  Important (Security):**
 
-    * Ne committez jamais votre fichier `.env` contenant des informations sensibles (comme les mots de passe) dans un dépôt public. Si vous utilisez un dépôt public, envisagez d'autres méthodes de gestion des secrets (variables d'environnement du système, coffres-forts, etc.).
+    * Never commit your `.env` file containing sensitive information (like passwords) to a public repository. If you're using a public repository, consider alternative methods for secret management (system environment variables, secrets vaults, etc.).
 
-## Utilisation
+## Usage
 
-1.  **Exécuter le script**
+1.  **Execute the script**
 
-    Une fois que vous avez configuré le fichier `.env` et que vous êtes dans l'environnement virtuel (si vous en utilisez un), exécutez le script Python :
+    Once you've configured the `.env` file and are within the virtual environment (if used), run the Python script:
 
     ```bash
     python3 app_activation.py
     ```
 
-    Le script va :
+    The script will:
 
-    * Charger les variables de configuration depuis le fichier `.env`.
-    * Lire les informations des applications depuis le fichier JSON (`applications.json`).
-    * Parcourir la liste des applications.
-    * Activer les applications dont l'état est "ACTIVE" en utilisant l'API REST ONOS.
-    * Afficher des messages de succès ou d'erreur pour chaque tentative d'activation.
+    * Load configuration variables from the `.env` file.
+    * Read application information from the JSON file (`applications.json`).
+    * Iterate through the list of applications.
+    * Activate applications with the state "ACTIVE" using the ONOS REST API.
+    * Display success or error messages for each activation attempt.
 
-## Gestion des Erreurs
+## Error Handling
 
-Le script inclut une gestion des erreurs pour :
+The script includes error handling for:
 
-* Les fichiers manquants (`applications.json` ou `.env`).
-* Les erreurs de format JSON dans `applications.json`.
-* Les erreurs de connexion à l'API ONOS.
-* Les valeurs manquantes ou incorrectes dans le fichier `.env`.
+* Missing files (`applications.json` or `.env`).
+* JSON format errors in `applications.json`.
+* Connection errors to the ONOS API.
+* Missing or incorrect values in the `.env` file.
 
-## Exemple de Fichier `applications.json`
+## Example `applications.json` File
 
 ```json
 {
